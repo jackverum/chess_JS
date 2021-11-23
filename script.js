@@ -54,12 +54,12 @@ init_map();
 
 function figureToHtml(figure) {
     switch (figure) {
-        case 'K': return '&#9812;'; case 'k': return '&#9812;';
-        case 'Q': return '&#9813;'; case 'q': return '&#9813;';
-        case 'R': return '&#9814;'; case 'r': return '&#9814;';
-        case 'B': return '&#9815;'; case 'b': return '&#9815;';
-        case 'N': return '&#9816;'; case 'n': return '&#9816;';
-        case 'P': return '&#9817;'; case 'p': return '&#9817;';
+        case 'K': return '&#9812;'; case 'k': return '&#9818;';
+        case 'Q': return '&#9813;'; case 'q': return '&#9819;';
+        case 'R': return '&#9814;'; case 'r': return '&#9820;';
+        case 'B': return '&#9815;'; case 'b': return '&#9821;';
+        case 'N': return '&#9816;'; case 'n': return '&#9822;';
+        case 'P': return '&#9817;'; case 'p': return '&#9823;';
         default: return '&nbsp;';
     }
 }
