@@ -37,6 +37,8 @@ function draw() {
 // draw();
 
 let map = [];
+let step = [];
+let start_side_color = 'white';
 
 function init_map() {
     map = [
@@ -50,7 +52,41 @@ function init_map() {
         ['R', 'P','', '','', '','p', 'r'],
     ]    
 }
-init_map();
+
+function figure_step() {
+    step = [
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '1', '2', '2', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', '']
+    ]
+}
+
+function markMoviesFrom() {
+    figure_step();
+    for (let x = 0; x <= 7; x++) {
+        for (let y = 0; y <= 7; y++) {
+            if (canMoveFrom(x, y)) {
+                step[x][y] = 1;
+            }
+        }        
+    }
+}
+
+function canMoveFrom(x, y) {
+    return getColor(x ,y) == start_side_color;
+}
+
+function getColor(x ,y) {
+    let figure = map[x][y];
+    if (figure == "") return "";
+    return (figure.toUpperCase() == figure) ? 'white' : 'black'
+}
+
 
 function figureToHtml(figure) {
     switch (figure) {
@@ -63,7 +99,7 @@ function figureToHtml(figure) {
         default: return '&nbsp;';
     }
 }
-figureToHtml()
+
 
 function show_map() {
     let html = '<table>';
@@ -72,17 +108,26 @@ function show_map() {
         html += '<tr>';
         html += '<td>' + (y + 1) + '</td>';
 
-        for (let x = 0; x <= 7; x++) {
-            if ((y + x) % 2) {
-                html += `<td>${figureToHtml(map[x][y])}</td>`;            
+        // for (let x = 0; x <= 7; x++) {
+        //     if ((y + x) %  2) {
+        //         html += `<td>${figureToHtml(map[x][y])}</td>`;            
                 
-            } else {
+        //     } else {
 
-                html += `<td style="background-color: #000">${figureToHtml(map[x][y])}</td>`            
+        //         html += `<td style="background-color: #000">${figureToHtml(map[x][y])}</td>`            
+        //     }
+        //     // x++;
+        // }
+
+        for (let x = 0; x <= 7; x++) {
+            if (step[x][y] == '') {
+                // html += `<td>${figureToHtml(map[x][y])}</td>`;   
+                ((y + x) %  2) ? color = "#fff" : color = "#0e0";
+            } else {
+                step[x][y] == '1'  ? color = "brown" : color = "lightblue";
             }
-            // x++;
+            html += `<td style="background-color: ${color}">${figureToHtml(map[x][y])}</td>`
         }
-        // i++;
         html += '</tr>';
 
     }
@@ -97,4 +142,7 @@ function show_map() {
 
 }
 
-show_map()
+init_map();
+markMoviesFrom();
+figureToHtml();
+show_map();
