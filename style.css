@@ -62,3 +62,22 @@ td {
     font-size: 27px;
     font-weight: 500;
 }
+
+
+.block {
+    position: relative;
+    margin: 30px;
+    padding: 10px;
+    border: 1px solid #000;
+    height: 200px;
+    width: 350px;
+}
+
+.droppable {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    border: 1px solid #000;
+    width: 80px;
+    height: 80px;
+}

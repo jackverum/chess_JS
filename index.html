@@ -14,6 +14,11 @@
             <div id="field"></div>
         </div>
         <div class="right active">
+            <div class="block">
+                <!-- <img id="ball" src="./DragDrop/ball.svg" alt=""> -->
+                <span id="ball">&#9812;</span>
+                <div class="droppable"></div>
+            </div>
             <!-- <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="125.000000pt" height="128.000000pt" viewBox="0 0 1237.000000 1280.000000" preserveAspectRatio="xMidYMid meet"><metadata>Created by potrace 1.15, written by Peter Selinger 2001-2017</metadata><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
                 <path d="M1066 12789 c-143 -34 -300 -183 -448 -424 -84 -138 -324 -603 -362 -702 -73 -188 -162 -567 -205 -868 -36 -256 -45 -368 -45 -570 l0 -200 42 -115 c45 -120 119 -410 247 -965 85 -367 195 -831 280 -1180 148 -609 215 -909 290 -1303 153 -809 249 -1618 285 -2397 11 -241 13 -808 4 -943 -7 -91 -7 -92 -34 -92 -46 0 -241 -60 -328 -100 -234 -110 -365 -270 -413 -505 -28 -137 -23 -424 9 -525 55 -171 158 -280 360 -381 l97 -48 -218 -1 c-196 0 -222 -2 -256 -20 -49 -25 -88 -70 -101 -120 -7 -26 -10 -234 -8 -617 l3 -578 27 -41 c15 -23 44 -52 65 -65 l38 -24 2761 -3 2761 -2 44 23 c24 13 58 43 74 66 l30 43 3 579 c2 385 -1 593 -8 619 -13 46 -50 94 -94 118 -26 14 -70 18 -271 22 l-240 5 70 39 c337 190 425 343 412 721 -9 270 -64 400 -228 540 -133 113 -447 255 -566 255 l-52 0 -27 82 c-35 111 -44 255 -19 329 38 118 102 177 267 250 151 66 207 102 287 181 196 194 312 471 352 839 15 131 6 447 -16 589 -68 442 -245 869 -497 1202 -76 100 -111 140 -368 414 -239 255 -737 804 -1110 1224 -134 151 -254 285 -266 296 -30 29 -38 79 -30 178 22 278 186 626 376 798 111 101 247 164 375 175 39 3 135 -6 275 -26 481 -69 669 -85 883 -78 192 6 249 20 312 78 70 65 134 207 170 376 14 68 13 76 -5 137 -29 92 -83 148 -224 231 l-115 68 16 31 c9 17 45 61 80 97 64 67 142 114 254 153 113 40 191 122 205 215 22 144 -111 381 -308 551 -84 73 -185 136 -238 149 -58 14 -344 57 -735 111 -1068 146 -1476 206 -1850 270 -202 35 -516 98 -523 105 -3 3 -4 42 -3 87 3 94 -3 93 -43 -5 -21 -51 -33 -66 -45 -63 -9 2 -53 14 -98 25 -193 49 -282 95 -323 167 -42 75 -78 98 -207 133 -199 54 -295 111 -424 249 -41 44 -94 90 -119 102 -91 46 -193 60 -284 39z"/>
                 <path d="M9750 9574 c-452 -50 -761 -193 -1055 -488 -282 -283 -433 -597 -481 -1001 -31 -257 8 -540 111 -795 87 -217 201 -387 376 -562 l117 -116 -46 -7 c-116 -17 -273 -83 -369 -155 -229 -173 -355 -435 -393 -819 -15 -157 -13 -454 4 -495 28 -67 23 -66 403 -66 222 0 343 -4 343 -10 0 -5 -4 -10 -8 -10 -4 0 -15 -12 -24 -27 -11 -21 -17 -69 -22 -180 -25 -584 -253 -1140 -699 -1711 -180 -230 -455 -521 -603 -637 l-80 -64 -32 -103 c-49 -161 -63 -243 -69 -388 -9 -229 45 -431 158 -597 16 -23 29 -44 29 -47 0 -3 -35 -6 -77 -6 -87 0 -128 -17 -160 -67 -17 -25 -18 -64 -18 -578 0 -515 1 -552 18 -577 10 -15 30 -35 45 -45 26 -17 127 -18 2544 -18 l2517 0 28 21 c64 47 63 34 63 622 0 467 -2 538 -16 567 -23 48 -59 69 -131 75 l-62 5 39 59 c111 168 172 451 150 693 -20 210 -71 359 -144 415 -87 68 -327 291 -456 424 -344 355 -579 720 -704 1096 -76 228 -105 406 -106 646 0 90 5 206 12 258 10 83 9 99 -5 129 -9 19 -21 35 -27 35 -5 0 -10 5 -10 10 0 7 142 10 405 10 451 0 443 -1 471 67 19 44 18 346 -1 523 -41 388 -188 670 -430 825 -108 69 -279 125 -380 125 l-52 0 126 128 c183 183 298 361 385 594 303 813 -71 1717 -866 2093 -115 54 -294 109 -425 130 -97 16 -325 27 -393 19z"/></g>
@@ -24,5 +29,76 @@
     </div>
     
     <script src="script.js"></script>
+    <script>
+//         let ball = document.getElementById('ball');
+     
+//         // ball.ondragstart = () => false;
+
+//         let currentDroppable = null;
+
+// ball.onmousedown = function(event) {
+
+//   let shiftX = event.clientX - ball.getBoundingClientRect().left;
+//   let shiftY = event.clientY - ball.getBoundingClientRect().top;
+
+//   ball.style.position = 'absolute';
+//   ball.style.zIndex = 1000;
+//   document.body.append(ball);
+
+//   moveAt(event.pageX, event.pageY);
+
+//   function moveAt(pageX, pageY) {
+//     ball.style.left = pageX - shiftX + 'px';
+//     ball.style.top = pageY - shiftY + 'px';
+//   }
+
+//   function onMouseMove(event) {
+//     moveAt(event.pageX, event.pageY);
+
+//     ball.hidden = true;
+//     // debugger
+//     let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+//     ball.hidden = false;
+    
+//     if (!elemBelow) return;
+
+//     let droppableBelow = elemBelow.closest('.droppable');
+//     if (currentDroppable != droppableBelow) {
+//       if (currentDroppable) { // null если мы были не над droppable до этого события
+//         // (например, над пустым пространством)
+//         leaveDroppable(currentDroppable);
+//       }
+//       currentDroppable = droppableBelow;
+//       if (currentDroppable) { // null если мы не над droppable сейчас, во время этого события
+//         // (например, только что покинули droppable)
+//         enterDroppable(currentDroppable);
+//       }
+//     }
+//   }
+
+//   document.addEventListener('mousemove', onMouseMove);
+
+//   ball.onmouseup = function() {
+//     document.removeEventListener('mousemove', onMouseMove);
+//     ball.onmouseup = null;
+//   };
+
+// };
+
+function enterDroppable(elem) {
+  elem.style.background = 'pink';
+}
+
+function leaveDroppable(elem) {
+  elem.style.background = '';
+}
+
+ball.ondragstart = function() {
+  return false;
+};
+
+
+
+</script>
 </body>
 </html>
