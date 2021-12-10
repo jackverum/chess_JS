@@ -131,39 +131,41 @@ function is_Correct_King_Move(sx, sy, dx, dy) {
 };
 function is_Correct_Queen_Move(sx, sy, dx, dy) {
 	// if(Math.abs(dx - sy) == 1 && Math.abs(dy - sy) == 1) return true;
-	return true
-};
-function is_Correct_Bishop_Move(sx, sy, dx, dy) {
-
-	let delta_x = Math.sign(dx - sx);
-	let delta_y = Math.sign(dy - sy);
-
-	if (Math.abs(delta_x) + Math.abs(delta_y) != 2) { // и 1 равно только когда перемещаемся по одному направлению
-		return false;
-	}
-	// // The same,  but more fully 
-	// // Check is there any real figure on the path of movement
+	let delta_x = Math.sign (dx - sx);
+	let delta_y = Math.sign (dy - sy);
+	
+	if (Math.abs(delta_x) + Math.abs(delta_y) == 0) return false; // и 1 равно только когда перемещаемся по одному направлению
+		
 	do {
 		sx += delta_x;
 		sy += delta_y;
-	// 	// Check if we get end of the desk (last cell on the board)
 		if (sx == dx && sy == dy) return true;
-	// 	// If we don't get end of the desk
-	// 	// Check is any figure on the path
-	// 	// debugger
-	// 	if (map[sx][sy] != '') {
-	// 		return false;
-	// 	}
-
-	// 	if((map [sx] [sy]) != ' ') {return false};
-	// 	if(is_empty(sx, sy)) {return false};
-	} while (is_empty(sx, sy));
-
+	} while (is_Empty(sx, sy));
+	// return false;
 
 	return false;
+};
 
 
-	// return true
+function is_Correct_Bishop_Move(sx, sy, dx, dy) {
+
+	let delta_x = Math.sign (dx - sx);
+	let delta_y = Math.sign (dy - sy);
+	
+	if (Math.abs(delta_x) + Math.abs(delta_y) != 2) return false; // и 1 равно только когда перемещаемся по одному направлению
+		
+	do {
+		sx += delta_x;
+		sy += delta_y;
+		// if (!on_Map[sx][sy] ) return false;
+		// Check if we get end of the desk (last cell on the board)
+		if (sx == dx && sy == dy) return true;
+		// if (map[sx][sy] != " ") return false;
+	// } while (is_empty(sx, sy));
+	} while (is_Empty(sx, sy));
+	// return false;
+
+	return false;
 };
 function is_Correct_Knight_Move(sx, sy, dx, dy) {
 	if(Math.abs(dx- sx) == 1 && Math.abs(dy - sy) == 2) return true;
@@ -212,13 +214,13 @@ function is_Correct_Rook_Move(sx, sy, dx, dy) {
 
 		// if((map [sx] [sy]) != ' ') {return false};
 		// if(is_empty(sx, sy)) {return false};
-	} while (is_empty(sx, sy));
+	} while (is_Empty(sx, sy));
 
 
 	return false;
 };
 
-function is_empty(x, y) {
+function is_Empty(x, y) {
 	if(!on_Map(x, y)) return false;
 	return map[x][y] == ' ';
 }
