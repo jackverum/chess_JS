@@ -124,54 +124,84 @@ function is_Knight(figure) {return figure.toUpperCase() == 'N'};
 function is_Rook  (figure) {return figure.toUpperCase() == 'R'};
 function is_Pawn  (figure) {return figure.toUpperCase() == 'P'};
 
+// This function will check how figures move acooding to the lines
+function is_Correct_Line_Move(sx, sy, dx, dy, figure) {
+		let delta_x = Math.sign (dx - sx);
+		let delta_y = Math.sign (dy - sy);
+		
+		// if (Math.abs(delta_x) + Math.abs(delta_y) == 0) return false; // и 1 равно только когда перемещаемся по одному направлению
+		if (!is_Correct_Line_Delta (delta_x, delta_y, figure)) return false;	
+		do {
+			sx += delta_x;
+			sy += delta_y;
+			if (sx == dx && sy == dy) return true;
+		} while (is_Empty(sx, sy));
+		// return false;
+	
+		return false;
+}
+
+function is_Correct_Line_Delta (delta_x, delta_y, figure) {
+	if (is_Bishop(figure)) {
+		return is_Correct_Bishop_Delta(delta_x, delta_y)
+	}
+	if (is_Queen(figure)) {
+		return is_Correct_Queen_Delta(delta_x, delta_y)
+	}
+	return false;
+}
+
+function is_Correct_Bishop_Delta(delta_x, delta_y) {
+	return Math.abs(delta_x) + Math.abs(delta_y) == 2;
+}
+function is_Correct_Rook_Delta(delta_x, delta_y) {
+	return Math.abs(delta_x) + Math.abs(delta_y) == 1;
+}
+function is_Correct_Queen_Delta(delta_x, delta_y) {
+	return true;
+	// return Math.abs(delta_x) + Math.abs(delta_y) == 0; // We can dont make == 0 , just return true,  and avoid this Math 
+}
 
 function is_Correct_King_Move(sx, sy, dx, dy) {
 	if(Math.abs(dx - sx) <= 1 && Math.abs(dy - sy) <= 1) return true;
 	return false;
 };
 function is_Correct_Queen_Move(sx, sy, dx, dy) {
-	// if(Math.abs(dx - sy) == 1 && Math.abs(dy - sy) == 1) return true;
-	let delta_x = Math.sign (dx - sx);
-	let delta_y = Math.sign (dy - sy);
-	
-	if (Math.abs(delta_x) + Math.abs(delta_y) == 0) return false; // и 1 равно только когда перемещаемся по одному направлению
-		
-	do {
-		sx += delta_x;
-		sy += delta_y;
-		if (sx == dx && sy == dy) return true;
-	} while (is_Empty(sx, sy));
-	// return false;
-
-	return false;
+	return  is_Correct_Line_Move(sx, sy, dx, dy, 'Q');
 };
 
 
 function is_Correct_Bishop_Move(sx, sy, dx, dy) {
 
-	let delta_x = Math.sign (dx - sx);
-	let delta_y = Math.sign (dy - sy);
-	
-	if (Math.abs(delta_x) + Math.abs(delta_y) != 2) return false; // и 1 равно только когда перемещаемся по одному направлению
-		
-	do {
-		sx += delta_x;
-		sy += delta_y;
-		// if (!on_Map[sx][sy] ) return false;
-		// Check if we get end of the desk (last cell on the board)
-		if (sx == dx && sy == dy) return true;
-		// if (map[sx][sy] != " ") return false;
-	// } while (is_empty(sx, sy));
-	} while (is_Empty(sx, sy));
-	// return false;
+	return  is_Correct_Line_Move(sx, sy, dx, dy, 'B');
 
-	return false;
+	// let delta_x = Math.sign (dx - sx);
+	// let delta_y = Math.sign (dy - sy);
+	
+	// if (Math.abs(delta_x) + Math.abs(delta_y) != 2) return false; // и 1 равно только когда перемещаемся по одному направлению
+		
+	// do {
+	// 	sx += delta_x;
+	// 	sy += delta_y;
+	// 	// if (!on_Map[sx][sy] ) return false;
+	// 	// Check if we get end of the desk (last cell on the board)
+	// 	if (sx == dx && sy == dy) return true;
+	// 	// if (map[sx][sy] != " ") return false;
+	// // } while (is_empty(sx, sy));
+	// } while (is_Empty(sx, sy));
+	// // return false;
+
+	// return false;
 };
+
+
 function is_Correct_Knight_Move(sx, sy, dx, dy) {
 	if(Math.abs(dx- sx) == 1 && Math.abs(dy - sy) == 2) return true;
 	if(Math.abs(dx- sx) == 2 && Math.abs(dy - sy) == 1) return true;
 	return false;
 };
+
+
 function is_Correct_Rook_Move(sx, sy, dx, dy) {
 	// Определяем координаты для вычисления куда нужно смещать фигуру для  движения по косой
 	// let delta_x = 0;
