@@ -44,6 +44,11 @@ let move_color = 'white';
 let move_from_x;
 let move_from_y;
 
+// Pawn attack for passant (взятие на проходе)
+let pawn_attack_x; // координаты битого поля 
+let pawn_attack_y;
+
+
 function init_map() {
 		map = [
 				['R', 'P',' ', ' ', ' ', ' ', 'p', 'r'],
@@ -88,8 +93,9 @@ function can_Move(sx, sy, dx, dy) {
 	if (!can_Move_From(sx, sy)) return false;
 	if (!can_Move_To(dx, dy)) return false;
 	// Check correct moves acooding to the chess rules
-	if (!is_Correct_Move(sx, sy, dx, dy)) return false;
-	return true; 
+	// if (!is_Correct_Move(sx, sy, dx, dy)) return false;
+	// return true; 
+	return is_Correct_Move(sx, sy, dx, dy);
 }
 
 function is_Correct_Move(sx, sy, dx, dy) {
@@ -261,10 +267,88 @@ function on_Map(x, y) {
 }
 
 function is_Correct_Pawn_Move(sx, sy, dx, dy) {
-	return true
+	if (sy < 1 || sy > 6) return false; // coordinates for pawn equal from 1 - 6
+	if (get_Color(sx, sy) == 'white' ) {
+		return is_Correct_Sign_Pawn_Move(sx, sy, dx, dy, +1);
+		// return is_Correct_White_Pawn_Move(sx, sy, dx, dy);
+	}
+	if (get_Color(sx, sy) == 'black' ) {
+		return is_Correct_Sign_Pawn_Move(sx, sy, dx, dy, -1);
+		// return is_Correct_Black_Pawn_Move(sx, sy, dx, dy);
+	}
+	return false;
 };
 
-
+// accoding to block_diagram 
+/*
+`https://viewer.diagrams.net/?tags=%7B%7D&target=self&highlight=0000ff&edit=_blank&layers=1&nav=1&title=chess_block_diagram.drawio#R7V3dc%2BI2EP9b%2BsBM7yGMLclfj0kI14dre3PpTJunjA8r4J6xGdsk0L%2B%2Bki2B5XUCJGBEq3vwWbL8gfan1f52V8oA385Xn%2FNwMfs1i2gyQFa0GuDRACHb9gL2H69ZixoHe3XNNI%2Bjus7aVtzH%2F1DRUNYu44gWoq6uKrMsKeOFWjnJ0pROSqUuzPPsRW32lCWRUrEIp1T5DF5xPwkTCpr9GUflrK71kbet%2F4XG05l8s%2B2KXzwPZWPx4GIWRtlLowrfDfBtnmVlfTZf3dKE957aL%2BNXrm4%2BLKdpuc8NXyfJA%2Fn9aTz%2B8iUNHh6%2FfUvv0ytUP%2BU5TJbiBw9G9sB3ByNrcIOqo1PVsM8di99RrmXn5NkyjSh%2FvjXANy%2BzuKT3i3DCr74wPLC6WTlPWMlmp8UPWk5mojALJ7NlTj%2FzRiPCKp6ytByH8zjhQLnOJ%2FxZk7Jg7xuFS9a9NBeN7rNlXr1hVpYMA8jB1%2BzAfjU%2F8AbFcJpl04SGi7gYTrJ5dWFSVE3HT%2FUr2KnyEgfdtF9TIxHxHwZ7WnT%2BM81LumpUiZ7%2FTLM5LXP2HktcdRCub5HjIBDlly2obFcgZdYAFHEFlgWOp5tHb0XNToS0D5A87pA8k7YtZc6ON5Xkb6rzAAifvYMNQmoE%2F6bgieUrgt88oiF434Nyx%2FaJ5E66R7zXGOtWdT4y0v%2Bw9D3bVqVvEyD9AHVIH59I%2Bg6Q%2FpSWj7dZkuU%2FfwJCZlPWoupzugqnWcr6ZEHzmH0J7y9Z%2B1VWod1geIpXVE7y%2F3twkKClGjBUDRs7SJkTghOhwwXoKNi3sb607CH75xqA9AoQG7kKQDCCRgP7ih4BYmM4EUTMXhbFNEv5jDBZ5s%2BVVciFptqIb8szy8tZxhATJl%2BybCFa%2FU3Lci16NlyWmQoYuorLv%2FjDh4T4ovzArw0tbrNW5dFKvL0qrEVBU%2FDYLv%2FQNLrm5IWVswXl46oow3zThNRNmsWi%2BsjNUOMjLE6n7CrvFHYvU%2FOvXGT4zNd1Fzqy%2BCA7jBe23VeV1o3O%2FNoY7W%2BCvpB9uEP11F%2F6FgKFrcRh9%2BYYymkSlvGzSuO6BoS49WsWs2%2FejD3kW0PPUYYfcR31KaJb6xu3I4tJLlw3mi14g%2BL1V2EPvAmh1lCtn7kduJsf%2Bv6x7AFl%2F0ALMLyZqipbBl2ZZz9oZTJsh%2FxTnCStqjCJpwy5ownDQgVyrvhixqyvxYV5HEXJaxbkIWpD05F8rGmAAa8NEOy7YCYguMOOtE41ETj6TgROcxowU8AeU8D71XbQjzYObDACCNlLGR9LWwZAW%2F6WvaYs99WQDfQaZXkkZdniVNhCQFF2udlOpygtAJw%2FOEoMdLSDDrI8BTtXdnBm7EDv%2FNqYaDpCBzuBAh1k%2B2e2z6Cb16gdPbETEBU7gQTF2dQOdAM%2BhUlBocVvYgB7yPfKHqKW7Yoge%2Bs1BuQQ7djb1gkVCG4j3VBDC2%2FcVK%2B5onip7YvSFFYXRO6kr22nU064q45NAw93pPltmuiIWfeknjQbutIa%2BRNeFUcdiywKXuPXsdZHGWZlR6sujBvx17vq3JHn7Ejq%2B3igzk34tP09Z2dTfhYXj4vwJWWHogjTsmoSzrkaTr8XiwoFVlcGhwngnDaAQ4Br14GzO3IcqPy9k03vPkCrcfxqCZ9AxvakZehBQtovq4BeMAMdLaHjgZAB8aAnrFfwIOgJMy5UHbGDAgTNqDO7UTe%2FYgueMl8aSvpOSkralJT4MDGt37RE7TJLNMXAOfNDiKtQ8yvGzd0Nez%2BEm7%2Bfk0qquZOTSqSeOjTJSaftecQP6qNqsvnWfmHKQ6kuctU4l4ud0%2FNcV2O3keoyQs4OVJrBLQa3yJqQeRJ193kyhaI7baKH0SunpzN7lNopuq7w1Z90mMlOOtCd1OUW%2BikuHu%2Fmi3L9c7QaIPY5VrT%2BZFxBh5pchThHx3ILBcDA7kjoYt%2B4MdOaNpj0ChzfyIZrggxD09F%2BZyZHy353LRhw7pegwYCzcQ1pCR4cEFX1BA6ATq%2BOIVe%2FXNIt5fECrJiW72E7mgLqgiKRUtvtthuPnpD6MWjDJVPaQPsQWBsE94ZgqWY1QTCCK0YjmpTh46qiESN%2BRKxfxlfszIYMpCMOXd%2B%2F3txvd8Wq96gyHKbvTQwYIWmZnU4HbUF9LllFMFnNcBYdweNJm1JAx7Og2dkvYzEL4C4EOg4mO6HTbygb5kGYDNmPbIRgqfIlHpBvr8FIDFMVTLT5%2FZrfcfUSL9HO4aApAi6IX0mw7ORXct3ouXOVWzrPFwsVTxpZkp3Ujiz5MrLEjreNDcBGjav1ZmC2iD4hq5m8XJO4OqrUJoAR7xVODiPJGPcnfYbh9Z2wbKvxTg9BVY1kImEv%2FA7DuIIxtT6QUixTeOU%2BhJZzblsLOpgMDdMSO3LcS91gw5UMvbIwbFw%2FlwEc31VdP7blntn3g6HvxxC8D6xwVeXrBmde3yqtEUPw%2FjsET%2FK23QTP14LgeerOrwHqgd%2BRrs19j8Pv0IH8DpkFqBpo5jaf80nHFrNy6UcvfM7Rbp1HZwr04K3852Z6kBMMTHrQ2eeGfXcPJafZPfTQucFveVmCHjYpIIYtXYbOdtsq%2B8zbARHIlYwH7gNkCamGoY%2Fhov5%2BNwPydZuRNUXAJU2I%2Fp4TonP0CfFjugbuTVLIREEZNjIEok8CgdU9MQN3z%2B1rTkcgYG6GiRfoiZ1WwCCwMMBOrwEDB1oym%2FWRhVgfWasbntFs2WYTLS1g1P7TaZYPowfIc%2FvUQWYfpEsBT2udrW0RuNFJv6vdTG7hMdlUW7wduqFXNuXCFCujGrSEjm%2B1oBOceXc9FwHoGA%2BdjshBnuqis21y5tX3MsHC%2BOiOYzX4QVvAJ8uSY8Xt34Cunf3bP6WN7%2F4F`
+*/
+function is_Correct_Sign_Pawn_Move(sx, sy, dx, dy, sign) {
+	if (is_Pawn_Passant(sx, sy, dx, dy, sign)) return true;
+	if (!is_Empty(dx, dy)) { // это взятие ???
+		if (Math.abs(dx - sx) != 1) return false; // 1 step to the left or right sides
+		return dy - sy == sign;
+	};
+	if (dx != sx) return false;
+	if (dy - sy == sign) return true;
+	if (dy - sy == sign*2) { // or sign + sign // on two cells
+		if (sy != 1 && sy != 6) return false; // Проверка нет ли напротив пешки фигуры, перед ходом на 2 клетки
+		// Here we work with pawn. How it can move on 2 cell forward.
+		// And we can controll this 2 cell moving in fn click_box_to(x, y)
+		return is_Empty(sx, sy + sign);
+	}
+	// return true;
+	return false;
+}
+// function is_Correct_White_Pawn_Move(sx, sy, dx, dy) {
+// 	if (is_Pawn_Passant(sx, sy, dx, dy)) return true;
+// 	if (!is_Empty(dx, dy)) { // это взятие ???
+// 		if (Math.abs(dx - sx) != 1) return false; // 1 step to the left or right sides
+// 		return dy - sy == 1;
+// 	};
+// 	if (dx != sx) return false;
+// 	if (dy - sy == 1) return true;
+// if (dy - sy == 2) { // on two cells
+// 		if (sy != 1) return false; // Проверка нет ли напротив пешки фигуры, перед ходом на 2 клетки
+// 		// Here we work with pawn. How it can move on 2 cell forward.
+// 		// And we can controll this 2 cell moving in fn click_box_to(x, y)
+// 		return is_Empty(sx, sy + 1);
+// 	}
+// 	// return true;
+// 	return false;
+// }
+// function is_Correct_Black_Pawn_Move(sx, sy, dx, dy) {
+// 	if (is_Pawn_Passant(sx, sy, dx, dy)) return true;
+// 	if (!is_Empty(dx, dy)) { // это взятие ???
+// 		if (Math.abs(dx - sx) != 1) return false; // 1 step to the left or right sides
+// 		return dy - sy == -1;
+// 	};
+// 	if (dx != sx) return false;
+// 	if (dy - sy == -1) return true;
+// 	if (dy - sy == -2) {
+// 		if (sy != 6) return false; // Проверка нет ли напротив пешки фигуры, перед ходом на 2 клетки
+// 		// Here we work with pawn. How it can move on 2 cell forward.
+// 		// And we can controll this 2 cell moving in fn click_box_to(x, y)
+// 		return is_Empty(sx, sy - 1);
+// 	}
+// 	// return true;
+// 	return false;
+// 	// return true;
+// }
+// function is_Pawn_Passant(sx, sy, dx, dy) {
+// 	if (!(pawn_attack_x == dx && pawn_attack_y == dy))	return false;
+// 	if (sy != 4) return false; // только с 4-ой горизонтали можно взятие на проходе
+// 	if (dy - sy != 1) return false;
+// 	return (Math.abs(dx - sx) == 1);
+// }
+function is_Pawn_Passant(sx, sy, dx, dy, sign) {
+	if (!(pawn_attack_x == dx && pawn_attack_y == dy))	return false;
+	if (sign == +1 && sy != 4) return false; // только с 4-ой горизонтали можно взятие на проходе
+	if (sign == -1 && sy != 3) return false; // только с 3-ой горизонтали можно взятие на проходе
+	if (dy - sy != sign) return false;
+	return (Math.abs(dx - sx) == 1);
+}
+ 
 
 function mark_Moves_From() {
 	init_step();
@@ -345,13 +429,52 @@ function click_box_from(x, y) {
 }
 
 // The cell where figure moves to
-function click_box_to(x, y) {
-		map[x][y] = map[move_from_x][move_from_y];
+function click_box_to(to_x, to_y) {
+		// What/Which was figure moved
+		let from_Figure  = map[move_from_x][move_from_y]; 
+		// Where was this figure moved to
+		let to_Figure = map[to_x][to_y];
+
+		// map[to_x][to_y] & map[move_from_x][move_from_y] === it is our moving of firures
+		map[to_x][to_y] = from_Figure;
 		map[move_from_x][move_from_y] = ' ';
+
+		
+
+		check_Pawn_Attack (from_Figure, to_x, to_y)
+
 		turn_move();
 		mark_Moves_From();
 		show_map();
 }
+
+function check_Pawn_Attack (from_Figure, to_x, to_y) {
+// BEFORE STEP
+
+			// Removing an enemy pawn figure from the chessboard 
+			if (is_Pawn(from_Figure)) {
+				if (to_x == pawn_attack_x && to_y == pawn_attack_y) {
+					if (move_color == 'white') map[to_x][to_y - 1] = ' '; // white
+					if (move_color == 'black') map[to_x][to_y + 1] = ' '; // black
+				}
+			} 
+
+// NEXT STEP after BEFORE STEP
+			// Reset cell value, if there was no passant attack
+			pawn_attack_x = -1;
+			pawn_attack_y = -1;
+			// We check is it PAWN figure in this cell
+			if (is_Pawn(from_Figure)) {
+				// If pawn move throw 2 cells
+				if (Math.abs(to_y - move_from_y)) {
+					// We save coordinate cell after passant attack to general coordinate move_from_x
+					pawn_attack_x = move_from_x;
+					// After moving pawn figure 2 cells: we get arithmetic mean, final & start cells divided by two
+					pawn_attack_y = (to_y + move_from_y) / 2;
+				}
+			}
+}
+
 
 function turn_move() {
 		// if (move_color = 'white') {
